@@ -31,6 +31,45 @@
             color: #333;
         }
 
+        #cardContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid #333;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .card p {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            border-color: #ff5722;
+        }
+
+        .card.selected {
+            border-color: #ff5722;
+            transform: scale(1.1);
+        }
+
         #gameContainer {
             display: flex;
             justify-content: center;
@@ -60,14 +99,28 @@
             color: #ff5722;
         }
 
-        #startButton {
+        .control {
+            margin-top: 20px;
+        }
+
+        .control button {
             background-color: #ffcc00;
             border: none;
             padding: 15px 30px;
             font-size: 1.5rem;
             cursor: pointer;
-            margin-top: 50px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .control button:hover {
+            background-color: #ffb200;
+            transform: scale(1.05);
+        }
+
+        .control input[type="range"] {
+            width: 100%;
+            margin-top: 10px;
         }
 
         #overlay {
@@ -118,16 +171,45 @@
     <header>
         <h1>Donut Disaster at Bikini Crampton</h1>
     </header>
-    <button id="startButton">Start Game</button>
+
+
     <div id="gameContainer" style="display: none;">
         <canvas id="gameCanvas" width="1200" height="800"></canvas>
         <div id="playerInfo">
+            <div class="control">
+                <button onclick="restartGame()">Restart</button>
+            </div>
             <p>Level: <span id="level">1</span></p>
             <p>Movement Speed: <span id="movementSpeed">0</span></p>
             <p>Shooting Speed: <span id="shootingSpeed">0</span></p>
             <p>Aura: <span id="auraLevel">0</span></p>
+            <div class="control">
+                <label for="volumeControl">Volume: </label>
+                <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.2"
+                    oninput="setVolume(this.value)">
+            </div>
         </div>
     </div>
+
+    <div id="cardContainer">
+        <div id="krab" class="card" onclick="selectCard(this)">
+            <img src="img/krab.png" alt="krab">
+            <p>Capitaine Krab</p>
+        </div>
+        <div id="bob" class="card" onclick="selectCard(this)">
+            <img src="img/bob.png" alt="bob">
+            <p>Bob</p>
+        </div>
+        <div id="patrick" class="card" onclick="selectCard(this)">
+            <img src="img/patrick.png" alt="patrick">
+            <p>Patrick</p>
+        </div>
+        <div id="carlo" class="card" onclick="selectCard(this)">
+            <img src="img/carlo.png" alt="carlo">
+            <p>Carlo</p>
+        </div>
+    </div>
+
     <div id="overlay"></div>
     <div id="bonusMenu">
         <h2>Choose a Bonus</h2>
@@ -150,6 +232,7 @@
     <script src="bonus.js"></script>
     <script src="heal.js"></script>
     <script src="main.js"></script>
+
 </body>
 
 </html>

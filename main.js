@@ -24,7 +24,7 @@ const AURA_UPGRADE_DAMAGE = 1;
 const AURA_UPGRADE_SIZE = 5;
 const BULLET_DAMAGE = 500;
 
-let player = new Player(canvas.width / 2, canvas.height / 2, PLAYER_SIZE, PLAYER_HP, "./img/player.png");
+let player = new Player(canvas.width / 2, canvas.height / 2, PLAYER_SIZE, PLAYER_HP, "./img/krab.png");
 player.updatePlayerInfo();
 
 let enemies = [];
@@ -85,6 +85,11 @@ const waves = [
     // Ajouter d'autres vagues ici...
 ];
 
+function restartGame() {
+    // Reset game variables
+    window.location.href = "./index.html"
+
+}
 
 function playMusic(musicPath) {
     if (currentMusic) {
@@ -92,6 +97,7 @@ function playMusic(musicPath) {
     }
     currentMusic = new Audio(musicPath);
     currentMusic.loop = true;
+    currentMusic.volume = document.getElementById('volumeControl').value;
     currentMusic.play();
 }
 
@@ -99,6 +105,12 @@ function checkWaveMusic() {
     const wave = waves[currentWave];
     if (wave.music) {
         playMusic(wave.music);
+    }
+}
+
+function setVolume(volume) {
+    if (currentMusic) {
+        currentMusic.volume = volume;
     }
 }
 
@@ -305,10 +317,40 @@ window.addEventListener('keydown', e => {
 window.addEventListener('keyup', e => {
     keys[e.key] = false;
 });
+function selectCard(card) {
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+}
 
-document.getElementById('startButton').addEventListener('click', () => {
-    document.getElementById('startButton').style.display = 'none';
+document.getElementById('krab').addEventListener('click', function () { init_game(this); });
+document.getElementById('bob').addEventListener('click', function () { init_game(this); });
+document.getElementById('patrick').addEventListener('click', function () { init_game(this); });
+document.getElementById('carlo').addEventListener('click', function () { init_game(this); });
+
+function init_game(choice) {
     document.getElementById('gameContainer').style.display = 'flex';
-    checkWaveMusic(); // Play music for the initial wave
+
+    document.getElementById('krab').style.display = 'none';
+    document.getElementById('bob').style.display = 'none';
+    document.getElementById('patrick').style.display = 'none';
+    document.getElementById('carlo').style.display = 'none';
+    enemies = [];
+    bullets = [];
+    bonuses = [];
+    heals = [];
+    keys = {};
+    gameOver = false;
+    win = false;
+    frameCount = 0;
+    isPaused = false;
+    score = 0;
+    currentWave = 0;
+    enemiesKilled = 0;
+    enemiesSpawned = 0;
+
+    // Reset player
+    player = new Player(canvas.width / 2, canvas.height / 2, PLAYER_SIZE, PLAYER_HP, "./img/" + choice.id + ".png");
+    player.updatePlayerInfo();
+    checkWaveMusic();
     loop();
-});
+}
