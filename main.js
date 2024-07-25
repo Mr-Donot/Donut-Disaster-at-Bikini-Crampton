@@ -152,7 +152,7 @@ function shoot() {
     if (frameCount % player.shootInterval === 0) {
         let direction = { x: player.direction.x || player.initialDirection.x, y: player.direction.y || player.initialDirection.y };
         if (direction.x !== 0 || direction.y !== 0) {
-            bullets.push(new Bullet(player.x + PLAYER_SIZE / 2 - BULLET_SIZE / 2, player.y + PLAYER_SIZE / 2 - BULLET_SIZE / 2, direction, BULLET_SIZE, "./img/bullet.png"));
+            bullets.push(new Bullet(player.x + PLAYER_SIZE / 2 - BULLET_SIZE / 2, player.y + PLAYER_SIZE / 2 - BULLET_SIZE / 2, direction, BULLET_SIZE, BULLET_IMG_PATH));
         }
     }
 }
@@ -349,7 +349,23 @@ function init_game(choice) {
     enemiesSpawned = 0;
 
     // Reset player
-    player = new Player(canvas.width / 2, canvas.height / 2, PLAYER_SIZE, PLAYER_HP, "./img/" + choice.id + ".png");
+    if (choice.id == "krab") {
+        player = new Player(canvas.width / 2, canvas.height / 2, PLAYER_SIZE, PLAYER_HP, "./img/" + choice.id + ".png");
+        BULLET_IMG_PATH = "./img/money.png"
+    }
+    if (choice.id == "bob") {
+        player = new Player(canvas.width / 2, canvas.height / 2, PLAYER_SIZE, PLAYER_HP, "./img/" + choice.id + ".png");
+        BULLET_IMG_PATH = "./img/patty.png"
+    }
+    if (choice.id == "patrick") {
+        player = new Player(canvas.width / 2, canvas.height / 2, PLAYER_SIZE, PLAYER_HP, "./img/" + choice.id + ".png");
+        BULLET_IMG_PATH = "./img/jellyfish.png"
+    }
+    if (choice.id == "carlo") {
+        player = new Player(canvas.width / 2, canvas.height / 2, PLAYER_SIZE, PLAYER_HP, "./img/" + choice.id + ".png");
+        BULLET_IMG_PATH = "./img/clarinet.png"
+    }
+
     player.updatePlayerInfo();
     checkWaveMusic();
     loop();
