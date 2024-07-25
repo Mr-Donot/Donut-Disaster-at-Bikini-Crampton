@@ -316,6 +316,9 @@ window.addEventListener('keydown', e => {
 
 window.addEventListener('keyup', e => {
     keys[e.key] = false;
+    if (['z', 'q', 's', 'd'].includes(e.key)) {
+        player.updateDirection(keys);
+    }
 });
 function selectCard(card) {
     document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
