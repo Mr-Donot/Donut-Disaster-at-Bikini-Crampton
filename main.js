@@ -105,6 +105,16 @@ const waves = [
         totalEnemies: 1,
         music: "./music/boss_fight.mp3"
     },
+    {
+        templates: [
+            { color: 'red', speed: 3, hp: 40000, damage: 600, size: 150, img_path: "./img/red.png" },
+            { color: 'white', speed: 2, hp: 80000, damage: 500, size: 150, img_path: "./img/white.png" },
+            { color: 'blue', speed: 4, hp: 40000, damage: 400, size: 150, img_path: "./img/blue.png" },
+        ],
+        probabilities: [1],
+        totalEnemies: 1,
+        music: "./music/boss_fight.mp3"
+    },
     // Ajouter d'autres vagues ici...
 ];
 
