@@ -9,7 +9,7 @@ backgroundImage.src = './img/background.png';
 const PLAYER_SIZE = 75;
 const ENEMY_SIZE = 20;
 const ENEMY_SPEED = 0.8;
-const BULLET_SIZE = 20;
+let BULLET_SIZE = 20;
 const BULLET_SPEED = 5;
 const PLAYER_HP = 150;
 const ENEMY_HP = 20;
@@ -69,6 +69,7 @@ const waves = [
     },
     // Ajouter d'autres vagues ici...
 ];
+
 
 function restartGame() {
     // Reset game variables
@@ -149,7 +150,7 @@ function shoot() {
 
         // Create the bullet if the direction is valid
         if (direction.x !== 0 || direction.y !== 0) {
-            bullets.push(new Bullet(playerCenterX - BULLET_SIZE / 2, playerCenterY - BULLET_SIZE / 2, direction, BULLET_SIZE, BULLET_IMG_PATH));
+            bullets.push(new Bullet(playerCenterX - BULLET_SIZE / 2, playerCenterY - BULLET_SIZE / 2, direction, player.bullet_size, BULLET_IMG_PATH));
         }
     }
 }

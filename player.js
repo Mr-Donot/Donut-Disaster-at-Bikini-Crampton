@@ -3,6 +3,7 @@ class Player {
         this.x = x;
         this.y = y;
         this.size = size;
+        this.bullet_size = BULLET_SIZE;
         this.hp = hp;
         this.speed = 3;
         this.shootInterval = 10;
@@ -117,6 +118,12 @@ class Player {
         }
         this.auraLevel += 1;
         this.level += 1;
+        this.updatePlayerInfo();
+        this.removeBonusMenu();
+    }
+
+    increaseBulletSize() {
+        this.bullet_size += 5;
         this.updatePlayerInfo();
         this.removeBonusMenu();
     }
