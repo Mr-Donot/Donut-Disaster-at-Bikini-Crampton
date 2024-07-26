@@ -20,6 +20,7 @@ class Player {
         this.movementSpeedLevel = 0;
         this.shootingSpeedLevel = 0;
         this.auraLevel = 0;
+        this.bulletSizeLevel = 0;
     }
 
     update(keys, canvas) {
@@ -123,6 +124,8 @@ class Player {
     }
 
     increaseBulletSize() {
+        this.level += 1;
+        this.bulletSizeLevel += 1;
         this.bullet_size += 5;
         this.updatePlayerInfo();
         this.removeBonusMenu();
@@ -143,6 +146,7 @@ class Player {
         document.getElementById('movementSpeed').innerText = this.movementSpeedLevel;
         document.getElementById('shootingSpeed').innerText = this.shootingSpeedLevel;
         document.getElementById('auraLevel').innerText = this.auraLevel;
+        document.getElementById('bulletSizeLevel').innerText = this.bulletSizeLevel;
     }
 
     auraCollidesWith(enemy) {
