@@ -111,9 +111,8 @@ const waves = [
             { color: 'white', speed: 2, hp: 80000, damage: 500, size: 150, img_path: "./img/white.png" },
             { color: 'blue', speed: 4, hp: 40000, damage: 400, size: 150, img_path: "./img/blue.png" },
         ],
-        probabilities: [1],
-        totalEnemies: 1,
-        music: "./music/boss_fight.mp3"
+        probabilities: [0.33, 0.34, 0.33],
+        totalEnemies: 3,
     },
     // Ajouter d'autres vagues ici...
 ];
