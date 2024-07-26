@@ -23,9 +23,47 @@ const AURA_BASE_SIZE = 10;
 const AURA_UPGRADE_DAMAGE = 1;
 const AURA_UPGRADE_SIZE = 5;
 const BULLET_DAMAGE = 500;
+const NB_BONUS_IN_CHOICE = 3;
 
 
 let currentMusic = null;
+const BONUS_POOL = [
+    {
+        class: 'bonus-button',
+        action: 'player.increaseSpeed()',
+        imgSrc: './img/speed.png',
+        alt: 'Increase Speed',
+        text: 'Increase Speed'
+    },
+    {
+        class: 'bonus-button',
+        action: 'player.decreaseShootInterval()',
+        imgSrc: './img/shoot.png',
+        alt: 'Decrease Shoot Interval',
+        text: 'Decrease Shoot Interval'
+    },
+    {
+        class: 'bonus-button',
+        action: 'player.addDamageAura()',
+        imgSrc: './img/aura.png',
+        alt: 'Add Damage Aura',
+        text: 'Add Damage Aura'
+    },
+    {
+        class: 'bonus-button',
+        action: 'player.increaseBulletSize()',
+        imgSrc: './img/bullet_size.png',
+        alt: 'Increase Bullet Size',
+        text: 'Increase Bullet Size'
+    },
+    {
+        class: 'bonus-button',
+        action: 'player.increaseBulletDamage()',
+        imgSrc: './img/bullet_damage.png',
+        alt: 'Increase Bullet Damage',
+        text: 'Increase Bullet Damage'
+    }
+];
 
 const waves = [
     {
@@ -70,6 +108,47 @@ const waves = [
     // Ajouter d'autres vagues ici...
 ];
 
+function getRandomBonuses() {
+    const shuffled = BONUS_POOL.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, NB_BONUS_IN_CHOICE);
+}
+
+function generateBonusMenu() {
+    const bonusMenu = document.getElementById('bonusMenu');
+    bonusMenu.innerHTML = '<h2>Choose a Bonus</h2>'; // Clear existing content
+
+    const randomBonuses = getRandomBonuses();
+    randomBonuses.forEach(bonus => {
+        bonus.class = 'bonus-button';
+    });
+    // Randomly select one of the three to be the super bonus
+    const superBonusIndex = Math.floor(Math.random() * randomBonuses.length);
+    randomBonuses[superBonusIndex].class = 'bonus-button superBonus';
+
+    randomBonuses.forEach((bonus, index) => {
+        const button = document.createElement('button');
+        button.className = 'bonus-button';
+
+        let action = bonus.action;
+        if (index === superBonusIndex) {
+            button.classList.add('superBonus');
+            action = `${bonus.action}; ${bonus.action}`;
+        }
+
+        button.setAttribute('onclick', action);
+
+        const img = document.createElement('img');
+        img.src = bonus.imgSrc;
+        img.alt = bonus.alt;
+
+        const p = document.createElement('p');
+        p.textContent = bonus.text;
+
+        button.appendChild(img);
+        button.appendChild(p);
+        bonusMenu.appendChild(button);
+    });
+}
 
 function restartGame() {
     // Reset game variables

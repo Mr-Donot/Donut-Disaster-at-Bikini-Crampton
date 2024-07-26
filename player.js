@@ -91,6 +91,7 @@ class Player {
 
     showBonusMenu() {
         isPaused = true;
+        generateBonusMenu();
         document.getElementById('overlay').style.display = 'block';
         document.getElementById('bonusMenu').style.display = 'block';
     }
