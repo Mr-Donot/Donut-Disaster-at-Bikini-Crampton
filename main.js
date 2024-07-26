@@ -71,7 +71,7 @@ const waves = [
             { color: 'orange', speed: 1.5, hp: 500, damage: 15, size: 25, img_path: "./img/orange.png" },
         ],
         probabilities: [1],
-        totalEnemies: 50,
+        totalEnemies: 60,
         music: "./music/wave_fight.mp3"
     },
     {
