@@ -9,7 +9,7 @@ backgroundImage.src = './img/background.png';
 const PLAYER_SIZE = 75;
 const ENEMY_SIZE = 20;
 const ENEMY_SPEED = 0.8;
-const BULLET_SIZE = 20;
+let BULLET_SIZE = 20;
 const BULLET_SPEED = 5;
 const PLAYER_HP = 150;
 const ENEMY_HP = 20;
@@ -23,9 +23,47 @@ const AURA_BASE_SIZE = 10;
 const AURA_UPGRADE_DAMAGE = 1;
 const AURA_UPGRADE_SIZE = 5;
 const BULLET_DAMAGE = 500;
+const NB_BONUS_IN_CHOICE = 3;
 
 
 let currentMusic = null;
+const BONUS_POOL = [
+    {
+        class: 'bonus-button',
+        action: 'player.increaseSpeed()',
+        imgSrc: './img/speed.png',
+        alt: 'Increase Speed',
+        text: 'Increase Speed'
+    },
+    {
+        class: 'bonus-button',
+        action: 'player.decreaseShootInterval()',
+        imgSrc: './img/shoot.png',
+        alt: 'Decrease Shoot Interval',
+        text: 'Decrease Shoot Interval'
+    },
+    {
+        class: 'bonus-button',
+        action: 'player.addDamageAura()',
+        imgSrc: './img/aura.png',
+        alt: 'Add Damage Aura',
+        text: 'Add Damage Aura'
+    },
+    {
+        class: 'bonus-button',
+        action: 'player.increaseBulletSize()',
+        imgSrc: './img/bullet_size.png',
+        alt: 'Increase Bullet Size',
+        text: 'Increase Bullet Size'
+    },
+    {
+        class: 'bonus-button',
+        action: 'player.increaseBulletDamage()',
+        imgSrc: './img/bullet_damage.png',
+        alt: 'Increase Bullet Damage',
+        text: 'Increase Bullet Damage'
+    }
+];
 
 const waves = [
     {
@@ -33,7 +71,7 @@ const waves = [
             { color: 'orange', speed: 1.5, hp: 500, damage: 15, size: 25, img_path: "./img/orange.png" },
         ],
         probabilities: [1],
-        totalEnemies: 50,
+        totalEnemies: 60,
         music: "./music/wave_fight.mp3"
     },
     {
@@ -67,8 +105,60 @@ const waves = [
         totalEnemies: 1,
         music: "./music/boss_fight.mp3"
     },
+    {
+        templates: [
+            { color: 'red', speed: 3, hp: 40000, damage: 600, size: 150, img_path: "./img/red.png" },
+            { color: 'white', speed: 2, hp: 80000, damage: 500, size: 150, img_path: "./img/white.png" },
+            { color: 'blue', speed: 4, hp: 40000, damage: 400, size: 150, img_path: "./img/blue.png" },
+        ],
+        probabilities: [1],
+        totalEnemies: 1,
+        music: "./music/boss_fight.mp3"
+    },
     // Ajouter d'autres vagues ici...
 ];
+
+function getRandomBonuses() {
+    const shuffled = BONUS_POOL.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, NB_BONUS_IN_CHOICE);
+}
+
+function generateBonusMenu() {
+    const bonusMenu = document.getElementById('bonusMenu');
+    bonusMenu.innerHTML = '<h2>Choose a Bonus</h2>'; // Clear existing content
+
+    const randomBonuses = getRandomBonuses();
+    randomBonuses.forEach(bonus => {
+        bonus.class = 'bonus-button';
+    });
+    // Randomly select one of the three to be the super bonus
+    const superBonusIndex = Math.floor(Math.random() * randomBonuses.length);
+    randomBonuses[superBonusIndex].class = 'bonus-button superBonus';
+
+    randomBonuses.forEach((bonus, index) => {
+        const button = document.createElement('button');
+        button.className = 'bonus-button';
+
+        let action = bonus.action;
+        if (index === superBonusIndex) {
+            button.classList.add('superBonus');
+            action = `${bonus.action}; ${bonus.action}`;
+        }
+
+        button.setAttribute('onclick', action);
+
+        const img = document.createElement('img');
+        img.src = bonus.imgSrc;
+        img.alt = bonus.alt;
+
+        const p = document.createElement('p');
+        p.textContent = bonus.text;
+
+        button.appendChild(img);
+        button.appendChild(p);
+        bonusMenu.appendChild(button);
+    });
+}
 
 function restartGame() {
     // Reset game variables
@@ -149,7 +239,7 @@ function shoot() {
 
         // Create the bullet if the direction is valid
         if (direction.x !== 0 || direction.y !== 0) {
-            bullets.push(new Bullet(playerCenterX - BULLET_SIZE / 2, playerCenterY - BULLET_SIZE / 2, direction, BULLET_SIZE, BULLET_IMG_PATH));
+            bullets.push(new Bullet(playerCenterX - BULLET_SIZE / 2, playerCenterY - BULLET_SIZE / 2, direction, player.bullet_size, player.bulletDamage, BULLET_IMG_PATH));
         }
     }
 }
@@ -180,7 +270,7 @@ function update() {
         }
         bullets.forEach((bullet, bulletIndex) => {
             if (bullet.collidesWith(enemy)) {
-                enemy.hp -= BULLET_DAMAGE;
+                enemy.hp -= bullet.damage;
                 bullets.splice(bulletIndex, 1);
                 if (enemy.hp <= 0) {
                     if (enemy.wave === currentWave) {

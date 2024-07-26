@@ -1,5 +1,5 @@
 class Bullet {
-    constructor(x, y, direction, size, img_path) {
+    constructor(x, y, direction, size, damage, img_path) {
         this.x = x;
         this.y = y;
         this.direction = direction;
@@ -7,6 +7,7 @@ class Bullet {
         this.speed = BULLET_SPEED;
         this.image = new Image();
         this.image.src = img_path;
+        this.damage = damage;
     }
 
     update() {
