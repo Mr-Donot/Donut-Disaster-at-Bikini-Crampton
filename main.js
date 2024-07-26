@@ -150,7 +150,7 @@ function shoot() {
 
         // Create the bullet if the direction is valid
         if (direction.x !== 0 || direction.y !== 0) {
-            bullets.push(new Bullet(playerCenterX - BULLET_SIZE / 2, playerCenterY - BULLET_SIZE / 2, direction, player.bullet_size, BULLET_IMG_PATH));
+            bullets.push(new Bullet(playerCenterX - BULLET_SIZE / 2, playerCenterY - BULLET_SIZE / 2, direction, player.bullet_size, player.bulletDamage, BULLET_IMG_PATH));
         }
     }
 }
@@ -181,7 +181,7 @@ function update() {
         }
         bullets.forEach((bullet, bulletIndex) => {
             if (bullet.collidesWith(enemy)) {
-                enemy.hp -= BULLET_DAMAGE;
+                enemy.hp -= bullet.damage;
                 bullets.splice(bulletIndex, 1);
                 if (enemy.hp <= 0) {
                     if (enemy.wave === currentWave) {

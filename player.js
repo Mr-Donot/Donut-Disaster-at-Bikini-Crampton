@@ -4,6 +4,7 @@ class Player {
         this.y = y;
         this.size = size;
         this.bullet_size = BULLET_SIZE;
+        this.bulletDamage = BULLET_DAMAGE;
         this.hp = hp;
         this.speed = 3;
         this.shootInterval = 10;
@@ -21,6 +22,7 @@ class Player {
         this.shootingSpeedLevel = 0;
         this.auraLevel = 0;
         this.bulletSizeLevel = 0;
+        this.bulletDamageLevel = 0;
     }
 
     update(keys, canvas) {
@@ -131,6 +133,14 @@ class Player {
         this.removeBonusMenu();
     }
 
+    increaseBulletDamage() {
+        this.level += 1;
+        this.bulletDamageLevel += 1;
+        this.bulletDamage *= 1.2;
+        this.updatePlayerInfo();
+        this.removeBonusMenu();
+    }
+
     updateAuraColor() {
         if (this.auraDamage < 10) {
             this.auraColor = '#FFFF00A0'; // Yellow with transparency
@@ -147,6 +157,7 @@ class Player {
         document.getElementById('shootingSpeed').innerText = this.shootingSpeedLevel;
         document.getElementById('auraLevel').innerText = this.auraLevel;
         document.getElementById('bulletSizeLevel').innerText = this.bulletSizeLevel;
+        document.getElementById('bulletDamageLevel').innerText = this.bulletDamageLevel;
     }
 
     auraCollidesWith(enemy) {

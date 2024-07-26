@@ -184,6 +184,7 @@
             <p>Shooting Speed: <span id="shootingSpeed">0</span></p>
             <p>Aura: <span id="auraLevel">0</span></p>
             <p>Bullet Size: <span id="bulletSizeLevel">0</span></p>
+            <p>Bullet Damage: <span id="bulletDamageLevel">0</span></p>
             <div class="control">
                 <label for="volumeControl">Volume: </label>
                 <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.2"
@@ -229,6 +230,10 @@
         <button class="bonus-button" onclick="player.increaseBulletSize()">
             <img src="./img/bullet_size.png" alt="Increase Bullet Size">
             <p>Increase Bullet Size</p>
+        </button>
+        <button class="bonus-button" onclick="player.increaseBulletDamage()">
+            <img src="./img/bullet_damage.png" alt="Increase Bullet Damage">
+            <p>Increase Bullet Damage</p>
         </button>
     </div>
     <script src="player.js"></script>
