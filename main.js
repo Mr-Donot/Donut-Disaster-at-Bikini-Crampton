@@ -24,22 +24,7 @@ const AURA_UPGRADE_DAMAGE = 1;
 const AURA_UPGRADE_SIZE = 5;
 const BULLET_DAMAGE = 500;
 
-let player = new Player(canvas.width / 2, canvas.height / 2, PLAYER_SIZE, PLAYER_HP, "./img/krab.png");
-player.updatePlayerInfo();
 
-let enemies = [];
-let bullets = [];
-let bonuses = [];
-let heals = [];
-let keys = {};
-let gameOver = false;
-let win = false;
-let frameCount = 0;
-let isPaused = false;
-let score = 0;
-let currentWave = 0;
-let enemiesKilled = 0;
-let enemiesSpawned = 0;
 let currentMusic = null;
 
 const waves = [
@@ -150,9 +135,21 @@ function spawnEnemy() {
 
 function shoot() {
     if (frameCount % player.shootInterval === 0) {
-        let direction = { x: player.direction.x || player.initialDirection.x, y: player.direction.y || player.initialDirection.y };
+        let playerCenterX = player.x + PLAYER_SIZE / 2;
+        let playerCenterY = player.y + PLAYER_SIZE / 2;
+
+        // Calculate direction vector from player to mouse
+        let direction = { x: mouseX - playerCenterX, y: mouseY - playerCenterY };
+
+
+        // Normalize the direction vector
+        let magnitude = Math.sqrt(direction.x * direction.x + direction.y * direction.y);
+        direction.x /= magnitude;
+        direction.y /= magnitude;
+
+        // Create the bullet if the direction is valid
         if (direction.x !== 0 || direction.y !== 0) {
-            bullets.push(new Bullet(player.x + PLAYER_SIZE / 2 - BULLET_SIZE / 2, player.y + PLAYER_SIZE / 2 - BULLET_SIZE / 2, direction, BULLET_SIZE, BULLET_IMG_PATH));
+            bullets.push(new Bullet(playerCenterX - BULLET_SIZE / 2, playerCenterY - BULLET_SIZE / 2, direction, BULLET_SIZE, BULLET_IMG_PATH));
         }
     }
 }
@@ -326,7 +323,14 @@ document.getElementById('krab').addEventListener('click', function () { init_gam
 document.getElementById('bob').addEventListener('click', function () { init_game(this); });
 document.getElementById('patrick').addEventListener('click', function () { init_game(this); });
 document.getElementById('carlo').addEventListener('click', function () { init_game(this); });
+let mouseX = 0;
+let mouseY = 0;
 
+canvas.addEventListener('mousemove', function (event) {
+    let rect = canvas.getBoundingClientRect();
+    mouseX = event.clientX - rect.left;
+    mouseY = event.clientY - rect.top;
+});
 function init_game(choice) {
     document.getElementById('gameContainer').style.display = 'flex';
 
